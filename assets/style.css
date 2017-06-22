@@ -1,0 +1,21 @@
+*{
+	outline: solid 1px red;
+	text-align: center;
+
+
+}
+
+body{
+	background: url("../assets/images/tardis.jpg")
+}
+
+#quizbox{
+	background-color: blue;
+	color: white;
+	height: 500px;
+}
+
+#stbtn{
+	position: absolute;
+	bottom: 10px;
+}
