@@ -9,6 +9,7 @@ var timeLeft = "";
 var intervalId;
 var clockRunning = false;
 var audio = new Audio("assets/Doctor_Who_Theme_-_2010.mp3")
+var userAnswers = []
 
 // and here is an array of objects containing all of our questions...
 
@@ -35,32 +36,8 @@ correctAnswer: "Torchwood"
 }
 ]
 
-// When start button is clicked...
-
-$('#stbtn').on('click', function(){
-	timer.start;
-	audio.play();
-
-	for (var j = 0; j < questions.length; j++) {
-		var questionDiv = $('<div>')
-		var questionconcat = questions[j].question;
-		console.log(questionconcat);
-		questionDiv.append('<h1>' + questionconcat + '</h1>');
-		var answersLength = questions[j].answers;
-		console.log(answersLength);
-		for (var i = 0; i <answersLength.length; i++) {
-		var radioButton = $('<input type="radio" name="answerbutton" value="' + questions[j].answers[i] + '" ><label>' + questions[j].answers[i] + '</label><br>');
-		questionDiv.append(radioButton);
-		}
-
-			$('#contentHolder').append(questionDiv);
-	
-	
-	}
-}) 
 
 
-// start the timer and insert it into the HTML
 var timer = {
 	time: 120,
 
@@ -97,19 +74,79 @@ var timer = {
 
     return minutes + ":" + seconds;
 
-  if(minutes === 0 && seconds === 0){
+  if(minutes === 00 && seconds === 00){
   	clockRunning = false;
   }
   }
+
 }
 
+var timeyWimey = timer.timeConverter(timer.time);
 
 
-// append the questions and give them radio buttons....
+
+	$('#stbtn').on('click', function(){
+		timer.start(timeyWimey);
+		audio.play();
+	for (var j = 0; j < questions.length; j++) {
+		var questionDiv = $('<div>')
+		var questionconcat = questions[j].question;
+		questionDiv.append('<h1>' + questionconcat + '</h1>');
+		var answersLength = questions[j].answers;
+		for (var i = 0; i <answersLength.length; i++) {
+			var radioButton = $('<input type="radio" name="answerbutton' + j + '" value="' + questions[j].answers[i] + '" ><label>' + questions[j].answers[i] + '</label><br>');
+			questionDiv.append(radioButton);
+			$("input:radio[name=answerbutton" + j + "]").click(function() {
+
+			 var value = $(this).val();
+			 console.log($(this);
+			 userAnswers.push(value); //trying to get the clicked button to feed into empty userAnswers array...
+			 console.log(userAnswers);
+						  
+			});
+			}
+
+	$('#contentHolder').append(questionDiv);
+	
+	}
+
+
+}) 
+
+	console.log(userAnswers);
+
+
+var test = questions[0].answers[0];
+console.log(test);
+
+// var test2 = 
+// console.log(test2);
 
 // when the timer ends...
-
 // add up right and wrong answers and unanswered questions....
 
 // and append them to the HTML...
+
+function tallyScore(){
+	for (var t = 0; t < userAnswers.length; t++) {
+		for (var w = 0; w <questions.correctAnswer.length; w++) {
+			if(userAnswers[t] === questions.correctAnswer[w]){
+				correctAnswers++;
+			}
+			else if(userAnswers[t] === null){
+				unanswered++;
+			}
+			else{
+				incorrectAnswers++;
+			}
+		}
+	}
+}
+
+if(timeyWimey === "00:00"){
+	tallyScore();
+	$('#contentHolder').empty();
+	$('#contentHolder').html('<p>Correct Answers: ' + correctAnswers + '</p><p> Incorrect Answers: ' + incorrectAnswers + '</p><p>Unanswered Questions: ' + unanswered + '</p>')
+}
+
 });
