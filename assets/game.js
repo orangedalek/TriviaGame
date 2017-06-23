@@ -99,7 +99,7 @@ var timeyWimey = timer.timeConverter(timer.time);
 			$("input:radio[name=answerbutton" + j + "]").click(function() {
 
 			 var value = $(this).val();
-			 console.log($(this);
+			 console.log($(this));
 			 userAnswers.push(value); //trying to get the clicked button to feed into empty userAnswers array...
 			 console.log(userAnswers);
 						  
